@@ -1,45 +1,86 @@
 $(document).ready(function () {
 
-getCurrentDay();
 
-pastPresentFuture();
 
+
+
+doInit();
+
+function doInit(){
+    getCurrentDay();
+    pastPresentFuture();
+    retrieveDescriptions();
+
+}
+
+
+$(".save-btn").on("click" , function (){
+
+   
+   const timeId = $(this).siblings(".description").attr("data-time");
+
+   
+   const userInput = $(this).siblings(".description").val();
+
+   
+   localStorage.setItem(timeId, userInput);
+
+
+})
+
+
+function retrieveDescriptions() {
+
+    const descriptions = $(".description");
+
+    $(descriptions).each(function (i, element) {
+
+        const timeid = $(element).attr("data-time");
+
+        const description = localStorage.getItem(timdId);
+
+        $(element).text(description);
+    })
+    
+}
 
 function pastPresentFuture() {
-// get current hour
+
 const currentHour = moment().hours();
 
 
 
-//target description tag
+
 const descriptions = $(".description");
 
+$(descriptions).each(function(index, element) {
 
-//get current time that is stored on description block
-const currentTimeOfBlock = parseInt($(descriptions[0]).attr("data-time"));
+
+
+const currentTimeOfBlock = parseInt($(element).attr("data-time"));
 
 
 if(currentTimeOfBlock < currentHour) {
-    $(descriptions[0]).addClass("past");
+    $(element).addClass("past");
  }
 else if (currentTimeOfBlock == currentHour){
-    $(descriptions[0]).addClass("present");
+    $(element).addClass("present");
 }
 else {
-    $(descriptions[0]).addClass("future");
+    $(element).addClass("future");
 
-}
-
+        }
+    })
 }
 
 
 
 function getCurrentDay() {
 
-//get the current day formatted
+
 const currentDay = moment().format("dddd. MMMM Do");
 
-//set the text of the current day element
+
 $("#currentDay").text(currentDay);
 
 }
